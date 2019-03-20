@@ -1,0 +1,23 @@
+%YAML 1.1
+---
+#gunicorn_graylog_watch_files:
+#  - path: "{{ application.directory }}/logs/access.log"
+#    unique_name: "{{ application.name }}_gunicorn_access"
+#  - path: "{{ application.directory }}/logs/access.log"
+#    unique_name: "{{ application.name }}_gunicorn_error"
+service:
+  name: gunicorn.service
+  user: collector
+  group: collector
+  gunicorn: /home/collector/venv/bin/gunicorn
+  runtime_dir: gunicorn
+  working_dir: /home/collector/response-collector
+  files:
+    - src: gunicorn.service.j2
+      dest: /etc/systemd/system/gunicorn.service
+    - src: gunicorn.socket.j2
+      dest: /etc/systemd/system/gunicorn.socket
+    - src: etc/defaults/gunicorn.j2
+      dest: /etc/default/gunicorn
+    - src: etc/tmpfiles.d/gunicorn.conf.j2
+      dest: /etc/tmpfiles.d/gunicorn.conf

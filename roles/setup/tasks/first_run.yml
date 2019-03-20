@@ -1,0 +1,47 @@
+%YAML 1.1
+---
+
+- name: create user
+  become: yes 
+  user:
+    home: /home/collector
+    name: collector
+    state: present
+  tags: user-setup
+
+- name: copy over collector repo
+  become: yes
+  synchronize:
+    src: /var/openstax-collector/response-collector/
+    dest: /home/collector/response-collector
+  tags:
+    - setup-repo
+
+- name: fix permissions
+  become: yes
+  file:
+    path: /home/collector/response-collector
+    owner: collector
+    group: collector
+    recurse: yes
+  tags:
+    - permissions
+
+- name: virtualenv setup
+  become: yes
+  become_user: collector
+  command: virtualenv -p python3 venv
+  args:
+    chdir: /home/collector
+  tags:
+    - virtualenv
+    - virtualenv-setup
+
+- name: tag environment as configured
+  become: no
+  file:
+    path: "{{ inventory_dir }}/.setup-complete"
+    state: touch
+  delegate_to: 127.0.0.1
+  tags:
+    - configure-confirm

@@ -1,0 +1,5 @@
+DAEMON_OPTS="--workers 5 --capture-output \
+    --access-logfile {{ service['working_dir'] }}/logs/access.log \
+    --error-logfile {{ service['working_dir'] }}/logs/error.log \
+    --user {{ service['user'] }} --group {{ service['group'] }} \
+    app:app"

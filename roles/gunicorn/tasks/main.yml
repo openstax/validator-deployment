@@ -1,0 +1,32 @@
+%YAML 1.1
+---
+#- name: pip install gunicorn
+#  become: yes
+#  become_user: "{{ user.name }}"
+#  pip:
+#    name: gunicorn
+#    virtualenv: "{{ virtualenv.base }}"
+#    virtualenv_python: "{{ virtualenv.python }}"
+#  tags: pip
+#
+#- name: create gunicorn log directory
+#  become: yes
+#  file:
+#    path: "{{ application.directory }}/logs"
+#    state: directory
+#    owner: "{{ user.name }}"
+#    group: "{{ user.group }}"
+#    mode: 0755
+#  tags: gunicorn-log
+#
+- name: setup gunicorn as service
+  import_tasks: setup_service.yml
+  tags: gunicorn-setup
+#
+#- import_tasks: roles/graylog/tasks/graylog_watch_files.yml
+#  vars:
+#    graylog_new_watch_files: "{{ gunicorn_graylog_watch_files }}"
+#  tags:
+#    - gunicorn
+#    - graylog
+#    - config

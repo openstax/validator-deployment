@@ -1,0 +1,52 @@
+---
+- name: start gunicorn socket
+  become: yes
+  service:
+    name: gunicorn.socket
+    enabled: yes
+    state: started
+  listen: start gunicorn socket
+  tags:
+    - gunicorn-service
+    - gunicorn-socket
+
+- name: start gunicorn service
+  become: yes
+  service:
+    name: gunicorn.service
+    enabled: yes
+    state: started
+  tags:
+    - gunicorn-service
+  listen: start gunicorn service
+
+- name: stop gunicorn service
+  become: yes
+  service:
+    name: gunicorn.service
+    enabled: yes
+    state: stopped
+  tags:
+    - gunicorn-service
+  listen: stop gunicorn service
+
+- name: restart gunicorn service
+  become: yes
+  service:
+    name: gunicorn.service
+    enabled: yes
+    state: restarted
+  tags: gunicorn-service
+  listen: restart gunicorn service
+
+- name: restart gunicorn socket and service
+  become: yes
+  service:
+    name: "gunicorn.{{ item }}"
+    enabled: yes
+    state: restarted
+  tags: gunicorn-restart
+  listen: restart gunicorn
+  with_items:
+    - service
+    - socket

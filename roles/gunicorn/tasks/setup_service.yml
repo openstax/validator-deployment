@@ -1,0 +1,39 @@
+%YAML 1.1
+---
+#- name: install gunicorn service files
+#  become: yes
+#  template:
+#    src: "{{ item.src }}"
+#    dest: "{{ item.dest }}"
+#  with_items:
+#    - { src: gunicorn.service, dest: /lib/systemd/system/gunicorn.service }
+#    - { src: gunicorn.socket, dest: /lib/systemd/system/gunicorn.socket }
+#    - { src: etc/defaults/gunicorn, dest: /etc/default/gunicorn }
+#    - { src: etc/tmpfiles.d/gunicorn.conf, dest: /etc/tmpfiles.d/gunicorn.conf }
+#  tags:
+#    - gunicorn-service
+#  notify:
+#    - start gunicorn socket
+#    - start gunicorn service
+
+- name: install gunicorn service files
+  become: yes
+  template:
+    src: "{{ svc['src'] }}"
+    dest: "{{ svc['dest'] }}"
+  loop: "{{ service['files'] }}"
+  loop_control:
+    loop_var: svc
+  tags:
+    - gunicorn-service
+
+- name: make sure log directory exists
+  become: yes
+  file:
+    path: "{{ service['working_dir'] }}/logs"
+    state: directory
+    owner: "{{ service['user'] }}"
+    group: "{{ service['group'] }}"
+    mode: 0755
+  tags:
+    - gunicorn-setup

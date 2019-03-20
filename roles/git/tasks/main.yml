@@ -1,0 +1,25 @@
+# vim: ft=yaml syntax=yaml sts=2 ts=2 sw=2 nosr et nu ru
+%YAML 1.1
+---
+
+- name: get collector revision
+  command: "git --git-dir=/var/openstax-collector/response-collector/.git rev-parse HEAD@{0}"
+  args:
+    warn: no
+  delegate_to: 127.0.0.1
+  register: git_rev
+  when:
+    - collector_rev is undefined
+
+- name: set collector version variable
+  set_fact:
+    version: "{{ git_rev.stdout }}"
+  when:
+    - git_rev is defined
+    - git_rev['stdout'] is defined
+
+- name: set collector version variable from alternate
+  set_fact:
+    version: "{{ collector_rev }}"
+  when:
+    - collector_rev is defined

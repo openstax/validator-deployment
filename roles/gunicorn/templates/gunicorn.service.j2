@@ -1,0 +1,19 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/default/gunicorn
+PIDFile=/run/gunicorn/pid
+User={{ service['user'] }}
+Group={{ service['group'] }}
+RuntimeDirectory={{ service['runtime_dir'] }}
+WorkingDirectory={{ service['working_dir'] }}
+ExecStart={{ service['gunicorn'] }} $DAEMON_OPTS
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
