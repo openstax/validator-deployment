@@ -1,1 +1,1 @@
-# collector-deployment
+# validator-deployment

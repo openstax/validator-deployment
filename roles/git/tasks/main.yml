@@ -2,24 +2,24 @@
 %YAML 1.1
 ---
 
-- name: get collector revision
-  command: "git --git-dir=/var/openstax-collector/response-collector/.git rev-parse HEAD@{0}"
+- name: get validator revision
+  command: "git --git-dir=/var/openstax-validator/response-validation/.git rev-parse HEAD@{0}"
   args:
     warn: no
   delegate_to: 127.0.0.1
   register: git_rev
   when:
-    - collector_rev is undefined
+    - validator_rev is undefined
 
-- name: set collector version variable
+- name: set validator version variable
   set_fact:
     version: "{{ git_rev.stdout }}"
   when:
     - git_rev is defined
     - git_rev['stdout'] is defined
 
-- name: set collector version variable from alternate
+- name: set validator version variable from alternate
   set_fact:
-    version: "{{ collector_rev }}"
+    version: "{{ validator_rev }}"
   when:
-    - collector_rev is defined
+    - validator_rev is defined
