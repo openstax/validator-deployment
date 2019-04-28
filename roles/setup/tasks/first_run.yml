@@ -1,6 +1,16 @@
 %YAML 1.1
 ---
 
+- name: install necessary apt packages
+  become: yes
+  apt:
+    name: "{{ apt_packages }}"
+    state: latest
+    update_cache: yes
+    install_recommends: yes
+    autoclean: yes
+  tags: apt-setup
+
 - name: create user
   become: yes 
   user:
