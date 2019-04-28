@@ -1,3 +1,6 @@
 # vim: ft=yaml syntax=yaml sts=2 ts=2 sw=2 nosr et nu ru
 %YAML 1.1
 ---
+apt_packages:
+  - nginx
+  - virtualenv
