@@ -1,11 +1,11 @@
 %YAML 1.1
 ---
 
-- name: collector deployment
+- name: validator deployment
   hosts: all:!local
   become: no
   tags:
-    - collector
+    - validator
   roles:
     - setup
     - gunicorn

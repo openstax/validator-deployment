@@ -2,5 +2,5 @@
 [local]
 127.0.0.1 ansible_connection=local
 
-[collector]
-server1.collector-dev.openstax.org ansible_python_interpreter=/usr/bin/python3
+[validator]
+server1.validator-dev.openstax.org ansible_python_interpreter=/usr/bin/python3

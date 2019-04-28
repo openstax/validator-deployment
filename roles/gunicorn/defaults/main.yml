@@ -7,11 +7,11 @@
 #    unique_name: "{{ application.name }}_gunicorn_error"
 service:
   name: gunicorn.service
-  user: collector
-  group: collector
-  gunicorn: /home/collector/venv/bin/gunicorn
+  user: validator
+  group: validator
+  gunicorn: /home/validator/venv/bin/gunicorn
   runtime_dir: gunicorn
-  working_dir: /home/collector/response-collector
+  working_dir: /home/validator/response-validation
   files:
     - src: gunicorn.service.j2
       dest: /etc/systemd/system/gunicorn.service

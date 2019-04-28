@@ -4,35 +4,35 @@
 - name: create user
   become: yes 
   user:
-    home: /home/collector
-    name: collector
+    home: /home/validator
+    name: validator
     state: present
   tags: user-setup
 
-- name: copy over collector repo
+- name: copy over validator repo
   become: yes
   synchronize:
-    src: /var/openstax-collector/response-collector/
-    dest: /home/collector/response-collector
+    src: /var/openstax-validator/response-validation/
+    dest: /home/validator/response-validation
   tags:
     - setup-repo
 
 - name: fix permissions
   become: yes
   file:
-    path: /home/collector/response-collector
-    owner: collector
-    group: collector
+    path: /home/validator/response-validation
+    owner: validator
+    group: validator
     recurse: yes
   tags:
     - permissions
 
 - name: virtualenv setup
   become: yes
-  become_user: collector
+  become_user: validator
   command: virtualenv -p python3 venv
   args:
-    chdir: /home/collector
+    chdir: /home/validator
   tags:
     - virtualenv
     - virtualenv-setup
