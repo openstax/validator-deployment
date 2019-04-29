@@ -1,0 +1,36 @@
+%YAML 1.1
+---
+- name: setup nginx template
+  become: yes
+  template:
+    src: validator.conf.j2
+    dest: /etc/nginx/sites-available/validator.conf
+  tags:
+    - nginx-conf
+
+# TODO: setup ssl
+
+- name: unlink default site
+  become: yes
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  tags:
+    - nginx-conf
+
+- name: link validator config
+  become: yes
+  file:
+    src: /etc/nginx/sites-available/validator.conf
+    dest: /etc/nginx/sites-enabled/validator.conf
+    state: link
+  tags:
+    - nginx-conf
+
+- name: restart nginx
+  become: yes
+  service:
+    name: nginx
+    state: restarted
+  tags:
+    - nginx-conf

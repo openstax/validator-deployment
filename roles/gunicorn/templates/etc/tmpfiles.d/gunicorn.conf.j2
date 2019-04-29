@@ -1,2 +1,2 @@
-d /run/gunicorn 0755 {{ service['user'] }} {{ service['group'] }}
-d {{ service['working_dir'] }}/logs 0755 {{ service['user'] }} {{ service['group'] }}
+d /run/gunicorn 0755 {{ gunicorn['user'] }} {{ gunicorn['group'] }}
+d {{ gunicorn['working_dir'] }}/logs 0755 {{ gunicorn['user'] }} {{ gunicorn['group'] }}

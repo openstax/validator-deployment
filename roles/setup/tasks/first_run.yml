@@ -14,38 +14,63 @@
 - name: create user
   become: yes 
   user:
-    home: /home/validator
-    name: validator
+    home: "{{ user['home'] }}"
+    name: "{{ user['name'] }}"
     state: present
   tags: user-setup
+
+- name: virtualenv setup
+  become: yes
+  become_user: "{{ user['name'] }}"
+  command: virtualenv -q -p python3 venv
+  args:
+    chdir: "{{ user['home'] }}"
+  tags:
+    - virtualenv
+    - virtualenv-setup
 
 - name: copy over validator repo
   become: yes
   synchronize:
-    src: /var/openstax-validator/response-validation/
-    dest: /home/validator/response-validation
+    src: "{{ main_dir }}/validator/"
+    dest: "{{ app_dir }}"
+    set_remote_user: no
+    use_ssh_args: yes
   tags:
-    - setup-repo
+    - validator-update
 
 - name: fix permissions
   become: yes
   file:
-    path: /home/validator/response-validation
-    owner: validator
-    group: validator
+    path: "{{ app_dir }}"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['group'] }}"
     recurse: yes
   tags:
     - permissions
+    - validator
 
-- name: virtualenv setup
+- name: pip install requirements.txt
   become: yes
-  become_user: validator
-  command: virtualenv -p python3 venv
-  args:
-    chdir: /home/validator
+  become_user: "{{ user['name'] }}"
+  pip:
+    virtualenv: "{{ user['home'] }}/venv"
+    requirements: "{{ app_dir }}/requirements.txt"
   tags:
-    - virtualenv
-    - virtualenv-setup
+    - validator-setup
+
+- name: install additional modules
+  become: yes
+  become_user: "{{ user['name'] }}"
+  command: "{{ user['home'] }}/venv/bin/python -m nltk.downloader {{ module }}"
+  loop:
+    - snowball_data
+    - words
+    - stopwords
+  loop_control:
+    loop_var: module
+  tags:
+    - validator-setup
 
 - name: tag environment as configured
   become: no

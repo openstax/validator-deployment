@@ -1,0 +1,4 @@
+%YAML 1.1
+---
+app_root: "{% if app is defined %}{{ app['root'] | default('/var/www/html') }}{% else %}/var/www/html{% endif %}"
+server_names: "{{ app['server_names'] | join(' ') }}"

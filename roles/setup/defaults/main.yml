@@ -4,3 +4,11 @@
 apt_packages:
   - nginx
   - virtualenv
+
+user:
+  name: validator
+  group: validator
+  home: /home/validator
+
+main_dir: "{{ (playbook_dir ~ '/../') | realpath }}"
+app_dir: "{{ user['home'] }}/validator"
