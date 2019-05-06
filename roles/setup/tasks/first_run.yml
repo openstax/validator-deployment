@@ -5,24 +5,37 @@
   become: yes
   apt:
     name: "{{ apt_packages }}"
-    state: latest
+    state: present
     update_cache: yes
     install_recommends: yes
     autoclean: yes
   tags: apt-setup
 
 - name: create user
-  become: yes 
+  become: yes
   user:
     home: "{{ user['home'] }}"
     name: "{{ user['name'] }}"
     state: present
   tags: user-setup
 
+- name: check for virtualenv
+  become: yes
+  stat:
+    path: "{{ user['home'] }}/venv"
+    follow: yes
+    get_attributes: no
+    get_checksum: no
+  register: venv_check
+  tags:
+    - virtualenv
+    - virtualenv-setup
+
 - name: virtualenv setup
   become: yes
   become_user: "{{ user['name'] }}"
   command: virtualenv -q -p python3 venv
+  changed_when: "not {{ venv_check['stat']['exists'] }}"
   args:
     chdir: "{{ user['home'] }}"
   tags:
@@ -63,6 +76,7 @@
   become: yes
   become_user: "{{ user['name'] }}"
   command: "{{ user['home'] }}/venv/bin/python -m nltk.downloader {{ module }}"
+  changed_when: False
   loop:
     - snowball_data
     - words

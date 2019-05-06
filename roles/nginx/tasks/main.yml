@@ -9,6 +9,31 @@
     - nginx-conf
 
 # TODO: setup ssl
+- name: local copy of certificates
+  import_role:
+    name: setup
+    tasks_from: retrieve_certs.yml
+  tags: ssl
+
+- name: copy ssl key to server
+  become: yes
+  copy:
+    src: "{{ ssl_local_key }}"
+    dest: /etc/ssl/private/openstax.pem
+    mode: 0600
+    owner: root
+    group: root
+  tags: ssl
+
+- name: copy ssl cert to server
+  become: yes
+  copy:
+    src: "{{ ssl_local_crt }}"
+    dest: /etc/ssl/certs/openstax.crt
+    mode: 0644
+    owner: root
+    group: root
+  tags: ssl
 
 - name: unlink default site
   become: yes
