@@ -5,13 +5,14 @@
 #    unique_name: "{{ application.name }}_gunicorn_access"
 #  - path: "{{ application.directory }}/logs/access.log"
 #    unique_name: "{{ application.name }}_gunicorn_error"
-service:
+gunicorn:
   name: gunicorn.service
   user: validator
   group: validator
   gunicorn: /home/validator/venv/bin/gunicorn
   runtime_dir: gunicorn
-  working_dir: /home/validator/response-validation
+  working_dir: /home/validator/validator
+  sock_file: /run/gunicorn/gunicorn.sock
   files:
     - src: gunicorn.service.j2
       dest: /etc/systemd/system/gunicorn.service

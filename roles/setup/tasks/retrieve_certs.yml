@@ -1,0 +1,25 @@
+%YAML 1.1
+---
+- name: ensure local directory exists
+  become: no
+  file:
+    path: "{{ s3['local_dir'] }}"
+    state: directory
+    mode: 0700
+  tags:
+    - ssl-local
+
+- name: download missing files
+  become: no
+  aws_s3:
+    bucket: "{{ s3['bucket'] }}"
+    object: "{{ s3['path'] }}/{{ object_name }}"
+    mode: get
+    dest: "{{ s3['local_dir'] }}/{{ object_name }}"
+    overwrite: different
+  loop: "{{ s3['objects'] }}"
+  loop_control:
+    loop_var: object_name
+  delegate_to: 127.0.0.1
+  tags:
+    - ssl-local

@@ -1,0 +1,7 @@
+%YAML 1.1
+---
+app_root: "{% if app is defined %}{{ app['root'] | default('/var/www/html') }}{% else %}/var/www/html{% endif %}"
+server_names: "{{ app['server_names'] | join(' ') }}"
+
+ssl_local_key: "{{ s3['local_dir'] }}/openstax.pem"
+ssl_local_crt: "{{ s3['local_dir'] }}/openstax.crt"

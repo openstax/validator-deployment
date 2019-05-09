@@ -1,3 +1,4 @@
 .setup-complete
 ansible.log
 *.retry
+secrets
