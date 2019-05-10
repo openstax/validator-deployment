@@ -81,6 +81,7 @@
     - snowball_data
     - words
     - stopwords
+    - punkt
   loop_control:
     loop_var: module
   tags:
