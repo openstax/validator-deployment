@@ -1,5 +1,5 @@
-DAEMON_OPTS="--workers 5 --capture-output \
+DAEMON_OPTS="--workers 2 --capture-output \
     --access-logfile {{ gunicorn['working_dir'] }}/logs/access.log \
     --error-logfile {{ gunicorn['working_dir'] }}/logs/error.log \
     --user {{ gunicorn['user'] }} --group {{ gunicorn['group'] }} \
-    app:app"
+    validator.app:app"
