@@ -4,6 +4,6 @@ ansible_python_interpreter: /usr/bin/python3
 app:
   name: validator
   root: /var/www/html
-  server_names: 
+  server_names:
     - validator-staging.openstax.org
     - "{{ inventory_hostname }}"

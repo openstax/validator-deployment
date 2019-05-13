@@ -3,7 +3,7 @@ upstream app_server {
     server unix:{{ gunicorn['sock_file'] }} max_fails=2 fail_timeout=0;
 }
 server {
-    listen 80; 
+    listen 80;
     merge_slashes off;
     server_name {{ server_names | default(inventory_hostname) }};
     root {{ app_root }};
