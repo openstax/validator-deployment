@@ -41,3 +41,14 @@
   tags:
     - permissions
     - validator
+
+- name: restart services
+  become: yes
+  service:
+    name: "{{ service }}"
+    state: restarted
+  loop:
+    - nginx
+    - gunicorn
+  tags:
+    - validator
