@@ -6,6 +6,7 @@
     path: "{{ s3['local_dir'] }}"
     state: directory
     mode: 0700
+  delegate_to: 127.0.0.1
   tags:
     - ssl-local
 
