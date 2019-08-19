@@ -35,7 +35,7 @@
   become: yes
   become_user: "{{ user['name'] }}"
   command: virtualenv -q -p python3 venv
-  when: not venv_check['stat']['exists']
+  changed_when: "not {{ venv_check['stat']['exists'] }}"
   args:
     chdir: "{{ user['home'] }}"
   tags:

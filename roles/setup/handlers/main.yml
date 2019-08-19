@@ -1,0 +1,10 @@
+%YAML 1.1
+---
+- name: restart gunicorn
+  become: yes
+  listen: restart gunicorn
+  service:
+    name: gunicorn.service
+    state: restarted
+  tags:
+    - gunicorn-restart
