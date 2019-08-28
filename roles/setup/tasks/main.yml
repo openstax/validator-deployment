@@ -30,11 +30,44 @@
     use_ssh_args: yes
   tags:
     - validator-update
+  when:
+    - validator_vers is undefined
+  notify: restart gunicorn
+
+- name: install validator using pip
+  become: yes
+  pip:
+    state: present
+    version: "{{ validator_vers }}"
+    virtualenv: "{{ user['home'] }}/venv"
+    name: response-validator
+  tags:
+    - validator-update
+  when:
+    - validator_vers is defined
+  notify: restart gunicorn
+
+- name: install additional modules
+  become: yes
+  become_user: "{{ user['name'] }}"
+  command: "{{ user['home'] }}/venv/bin/python -m nltk.downloader {{ module }}"
+  changed_when: False
+  loop:
+    - snowball_data
+    - words
+    - stopwords
+    - punkt
+  loop_control:
+    loop_var: module
+  when:
+    - validator_vers is defined
+  tags:
+    - validator-setup
 
 - name: fix permissions
   become: yes
   file:
-    path: "{{ app_dir }}"
+    path: "{{ user['home'] }}"
     owner: "{{ user['name'] }}"
     group: "{{ user['group'] }}"
     recurse: yes
