@@ -21,23 +21,20 @@
   tags:
     - initial
 
-- name: copy over validator repo
+- name: copy over requirements.txt
   become: yes
-  synchronize:
-    src: "{{ main_dir }}/validator/"
-    dest: "{{ app_dir }}"
-    set_remote_user: no
-    use_ssh_args: yes
+  copy:
+    src: "{{ inventory_dir }}/files/requirements.txt"
+    dest: "{{ app_dir }}/requirements.txt"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: install validator using pip
+  become: yes
+  become_user: "{{ user['name'] }}"
+  pip:
+    virtualenv: "{{ user['home'] }}/venv" 
+    requirements: "{{ app_dir }}/requirements.txt"
   tags:
     - validator-update
-
-- name: fix permissions
-  become: yes
-  file:
-    path: "{{ app_dir }}"
-    owner: "{{ user['name'] }}"
-    group: "{{ user['group'] }}"
-    recurse: yes
-  tags:
-    - permissions
-    - validator
+  notify: restart gunicorn

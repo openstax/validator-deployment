@@ -34,58 +34,22 @@
 - name: virtualenv setup
   become: yes
   become_user: "{{ user['name'] }}"
-  command: virtualenv -q -p python3 venv
-  when: not venv_check['stat']['exists']
+  shell: |
+    virtualenv -q -p python3 venv
+    venv/bin/python -m pip install --upgrade pip setuptools wheel
+  when: not venv_check.stat.exists
   args:
     chdir: "{{ user['home'] }}"
   tags:
     - virtualenv
     - virtualenv-setup
 
-- name: copy over validator repo
+- name: create app dir
   become: yes
-  synchronize:
-    src: "{{ main_dir }}/validator/"
-    dest: "{{ app_dir }}"
-    set_remote_user: no
-    use_ssh_args: yes
-  tags:
-    - validator-update
-
-- name: fix permissions
-  become: yes
+  become_user: "{{ user['name'] }}"
   file:
     path: "{{ app_dir }}"
-    owner: "{{ user['name'] }}"
-    group: "{{ user['group'] }}"
-    recurse: yes
-  tags:
-    - permissions
-    - validator
-
-- name: pip install requirements.txt
-  become: yes
-  become_user: "{{ user['name'] }}"
-  pip:
-    virtualenv: "{{ user['home'] }}/venv"
-    requirements: "{{ app_dir }}/requirements.txt"
-  tags:
-    - validator-setup
-
-- name: install additional modules
-  become: yes
-  become_user: "{{ user['name'] }}"
-  command: "{{ user['home'] }}/venv/bin/python -m nltk.downloader {{ module }}"
-  changed_when: False
-  loop:
-    - snowball_data
-    - words
-    - stopwords
-    - punkt
-  loop_control:
-    loop_var: module
-  tags:
-    - validator-setup
+    state: directory
 
 - name: tag environment as configured
   become: no
