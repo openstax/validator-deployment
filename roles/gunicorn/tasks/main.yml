@@ -1,24 +1,23 @@
 %YAML 1.1
 ---
-#- name: pip install gunicorn
-#  become: yes
-#  become_user: "{{ user.name }}"
-#  pip:
-#    name: gunicorn
-#    virtualenv: "{{ virtualenv.base }}"
-#    virtualenv_python: "{{ virtualenv.python }}"
-#  tags: pip
-#
-#- name: create gunicorn log directory
-#  become: yes
-#  file:
-#    path: "{{ application.directory }}/logs"
-#    state: directory
-#    owner: "{{ user.name }}"
-#    group: "{{ user.group }}"
-#    mode: 0755
-#  tags: gunicorn-log
-#
+- name: pip install gunicorn
+  become: yes
+  become_user: "{{ user.name }}"
+  pip:
+    name: gunicorn
+    virtualenv: "{{ user['home'] }}/venv"
+  tags: pip
+
+- name: create gunicorn log directory
+  become: yes
+  file:
+    path: "{{ app_dir }}/logs"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: 0755
+  tags: gunicorn-log
+
 - name: setup gunicorn as service
   import_tasks: setup_service.yml
   tags: gunicorn-setup

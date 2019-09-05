@@ -12,7 +12,7 @@ gunicorn:
   gunicorn: /home/validator/venv/bin/gunicorn
   runtime_dir: gunicorn
   working_dir: /home/validator/validator
-  sock_file: /run/gunicorn/gunicorn.sock
+  sock_file: /run/gunicorn.sock
   num_workers: "{{ ansible_processor_vcpus | default(2) }}"
   files:
     - src: gunicorn.service.j2
