@@ -3,10 +3,6 @@
 
 - name: validator deployment
   hosts: all:!local
-  vars_prompt:
-    - name: validator_vers
-      prompt: response-validator version
-      private: no
   become: no
   tags:
     - validator
