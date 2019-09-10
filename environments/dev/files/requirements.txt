@@ -1,2 +1,2 @@
 nltk
-git+https://github.com/openstax/response-validator.git@nltk-build-only#egg=validator
+git+https://github.com/openstax/response-validator.git@master#egg=validator
