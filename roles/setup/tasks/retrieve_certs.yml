@@ -18,6 +18,7 @@
     mode: get
     dest: "{{ s3['local_dir'] }}/{{ object_name }}"
     overwrite: different
+  ignore_errors: yes
   loop: "{{ s3['objects'] }}"
   loop_control:
     loop_var: object_name

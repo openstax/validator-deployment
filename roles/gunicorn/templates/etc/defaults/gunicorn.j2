@@ -3,4 +3,4 @@ DAEMON_OPTS="--workers {{ gunicorn['num_workers'] }} --capture-output \
     --error-logfile {{ gunicorn['working_dir'] }}/logs/error.log \
     --user {{ gunicorn['user'] }} --group {{ gunicorn['group'] }} \
     --bind {{ gunicorn['sock_file'] }} \
-    validator.app:app"
+    validator.app:create_app(DATA_DIR=\\'/var/lib/validator\\')"
