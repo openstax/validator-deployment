@@ -50,6 +50,22 @@
   file:
     path: "{{ app_dir }}"
     state: directory
+  tags:
+    - app-dir
+
+- name: setup gunicorn
+  include_role:
+    name: gunicorn
+    public: yes
+  tags:
+    - gunicorn
+
+- name: setup nginx
+  include_role:
+    name: nginx
+    public: yes
+  tags:
+    - nginx
 
 - name: tag environment as configured
   become: no

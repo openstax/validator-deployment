@@ -30,7 +30,9 @@
     group: "{{ user['name'] }}"
 
 - name: data source path
-  command: "{{ user['home'] }}/venv/bin/python -c 'import pkg_resources as pr; print (pr.resource_filename(\"validator\", \"ml/data\"))'"
+  command: >-
+    {{ user['home'] }}/venv/bin/python -c "import pkg_resources as pr; print(pr.resource_filename('validator', 'ml/data'))"
+  changed_when: False
   register: source_data_path
 
 - name: data source files
@@ -44,7 +46,7 @@
   find:
     paths: /var/lib/validator
   register: data_files
-  
+
 - name: copy data files, if needed
   become: yes
   become_user: "{{ user['name'] }}"
@@ -71,9 +73,8 @@
   become: yes
   become_user: "{{ user['name'] }}"
   pip:
-    virtualenv: "{{ user['home'] }}/venv" 
+    virtualenv: "{{ user['home'] }}/venv"
     requirements: "{{ app_dir }}/requirements.txt"
-    state: latest
   tags:
     - validator-update
   notify: restart gunicorn
