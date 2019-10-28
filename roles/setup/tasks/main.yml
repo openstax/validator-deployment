@@ -75,6 +75,7 @@
   pip:
     virtualenv: "{{ user['home'] }}/venv"
     requirements: "{{ app_dir }}/requirements.txt"
+    state: latest
   tags:
     - validator-update
   notify: restart gunicorn
