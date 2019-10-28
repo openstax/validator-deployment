@@ -6,6 +6,8 @@
   become: no
   tags:
     - validator
+    - setup
   roles:
-    - role: setup
-      tags: setup
+    - setup
+    - gunicorn
+    - nginx
