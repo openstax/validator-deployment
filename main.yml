@@ -6,6 +6,7 @@
   become: no
   tags:
     - validator
+    - setup
   roles:
     - setup
     - gunicorn
