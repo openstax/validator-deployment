@@ -1,0 +1,6 @@
+# vim: ft=dosini syntax=dosini sts=4 ts=4 sw=4 nosr et nu ru
+[local]
+127.0.0.1 ansible_connection=local
+
+[validator]
+server1.validator-EnvName-ae.openstax.org
