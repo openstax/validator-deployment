@@ -29,6 +29,25 @@
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
 
+- name: copy over requirements.txt
+  become: yes
+  copy:
+    src: "{{ inventory_dir }}/files/requirements.txt"
+    dest: "{{ app_dir }}/requirements.txt"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: install validator using pip
+  become: yes
+  become_user: "{{ user['name'] }}"
+  pip:
+    virtualenv: "{{ user['home'] }}/venv"
+    requirements: "{{ app_dir }}/requirements.txt"
+    state: latest
+  tags:
+    - validator-update
+  notify: restart gunicorn
+
 - name: data source path
   command: >-
     {{ user['home'] }}/venv/bin/python -c "import pkg_resources as pr; print(pr.resource_filename('validator', 'ml/data'))"
@@ -60,22 +79,3 @@
   when:
     - source_data_files.matched > 0
     - data_files.matched == 0
-
-- name: copy over requirements.txt
-  become: yes
-  copy:
-    src: "{{ inventory_dir }}/files/requirements.txt"
-    dest: "{{ app_dir }}/requirements.txt"
-    owner: "{{ user['name'] }}"
-    group: "{{ user['name'] }}"
-
-- name: install validator using pip
-  become: yes
-  become_user: "{{ user['name'] }}"
-  pip:
-    virtualenv: "{{ user['home'] }}/venv"
-    requirements: "{{ app_dir }}/requirements.txt"
-    state: latest
-  tags:
-    - validator-update
-  notify: restart gunicorn
