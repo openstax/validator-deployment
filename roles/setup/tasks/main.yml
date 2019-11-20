@@ -29,38 +29,6 @@
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
 
-- name: data source path
-  command: >-
-    {{ user['home'] }}/venv/bin/python -c "import pkg_resources as pr; print(pr.resource_filename('validator', 'ml/data'))"
-  changed_when: False
-  register: source_data_path
-
-- name: data source files
-  find:
-    paths: "{{ source_data_path.stdout }}"
-    pattern: "df_(innovation|questions|domain).csv"
-    use_regex: yes
-  register: source_data_files
-
-- name: target data files
-  find:
-    paths: /var/lib/validator
-  register: data_files
-
-- name: copy data files, if needed
-  become: yes
-  become_user: "{{ user['name'] }}"
-  copy:
-    remote_src: yes
-    src: "{{ item.path }}"
-    dest: /var/lib/validator
-    owner: "{{ user['name'] }}"
-    group: "{{ user['name'] }}"
-  with_items: "{{ source_data_files.files }}"
-  when:
-    - source_data_files.matched > 0
-    - data_files.matched == 0
-
 - name: copy over requirements.txt
   become: yes
   copy:
