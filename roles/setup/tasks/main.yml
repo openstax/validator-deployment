@@ -3,13 +3,12 @@
 
 - name: determine if this is first run
   stat:
-    path: "{{ inventory_dir }}/.setup-complete"
+    path: "{{ app_dir }}/.setup-complete"
     follow: yes
     get_attributes: no
     get_checksum: no
     get_mime: no
   register: setup_stat
-  delegate_to: 127.0.0.1
   tags:
     - setup-check
 
