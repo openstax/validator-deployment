@@ -1,1 +1,1 @@
-response-validator==3.0.2
+response-validator==3.0.3
