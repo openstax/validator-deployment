@@ -6,6 +6,7 @@
   pip:
     name: gunicorn
     virtualenv: "{{ user['home'] }}/venv"
+    version: "!=20.0.0"
   tags: pip
 
 - name: create gunicorn log directory
