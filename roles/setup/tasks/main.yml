@@ -3,7 +3,7 @@
 
 - name: determine if this is first run
   stat:
-    path: "{{ app_dir }}/.setup-complete"
+    path: "{{ user['home'] }}/.setup-complete"
     follow: yes
     get_attributes: no
     get_checksum: no
