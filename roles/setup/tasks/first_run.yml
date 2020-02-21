@@ -68,7 +68,8 @@
     - nginx
 
 - name: tag environment as configured
-  become: no
+  become: yes
+  become_user: "{{ user['name'] }}"
   file:
     path: "{{ app_dir }}/.setup-complete"
     state: touch
