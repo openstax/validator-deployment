@@ -1,2 +1,2 @@
-gevent==1.4.0
+gevent==20.5.0
 response-validator==3.1.0
