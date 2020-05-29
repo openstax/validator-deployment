@@ -3,5 +3,4 @@
 127.0.0.1 ansible_connection=local
 
 [validator]
-192.168.123.102
-#server1.validator-staging.openstax.org
+server1.validator-staging.openstax.org
