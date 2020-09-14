@@ -1,1 +1,1 @@
-response-validator==5.0.0
+response-validator==5.0.1
