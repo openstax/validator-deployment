@@ -12,3 +12,5 @@ user:
 
 main_dir: "{{ (playbook_dir ~ '/../') | realpath }}"
 app_dir: "{{ user['home'] }}/validator"
+
+sentry_dsn: "https://d587530fe7824275a726f6748c0c56c3@sentry.cnx.org/21"

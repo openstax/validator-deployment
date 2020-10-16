@@ -46,3 +46,12 @@
   tags:
     - validator-update
   notify: restart gunicorn
+
+- name: install validator configuration
+  become: yes
+  template:
+    src: config.cfg.j2
+    dest: "{{ app_dir }}/config.py"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+    mode: 0600
