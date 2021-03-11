@@ -46,3 +46,9 @@
   tags:
     - validator-update
   notify: restart gunicorn
+
+- name: install validator configuration
+  become: yes
+  template:
+    src: validator.cfg.j2
+    dest: "{{ app_dir }}/validator.cfg"
